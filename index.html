@@ -3,9 +3,9 @@
 
   <script src="recorder/javascripts/lib/three.min.js"></script>
 
-  <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
-  <script src="//js.leapmotion.com/leap-plugins-0.1.11.js"></script>
-  <script src="//js.leapmotion.com/leap.rigged-hand-0.1.4.js"></script>
+  <script src="leap-0.6.4.min.js"></script>
+  <script src="leap-plugins-0.1.12.js"></script>
+  <script src="leap.rigged-hand-0.1.7.min.js"></script>
   <!-- override the bundled playback plugin: -->
   <script src="build/leap.playback-0.2.1.js"></script>
 
@@ -17,7 +17,7 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      top: 0;
+      top: 0px;
       left: 0;
     }
     #debugger{
@@ -40,7 +40,7 @@
 <script>
   Leap.loop({})
     .use('playback', {
-      recording: 'recorder/recordings/pinch-57fps.json.lz',
+      recording: 'file://recorder/recordings/pinch-57fps.json.lz',
       requiredProtocolVersion: 6,
       pauseOnHand: true,
       loop: true
