@@ -1,8 +1,8 @@
 /*                    
- * LeapJS Playback - v0.2.1 - 2015-01-20                    
+ * LeapJS Playback - v0.2.1 - 2019-04-08                    
  * http://github.com/leapmotion/leapjs-playback/                    
  *                    
- * Copyright 2015 LeapMotion, Inc                    
+ * Copyright 2019 LeapMotion, Inc                    
  *                    
  * Licensed under the Apache License, Version 2.0 (the "License");                    
  * you may not use this file except in compliance with the License.                    
