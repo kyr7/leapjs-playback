@@ -363,6 +363,9 @@ function onReady(handler) {
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
     this.camera.position.fromArray([0, 160, 400]);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    //fixed camera position
+    this.camera.translateY(150);
+    
     if (!this.renderer) {
       this.renderer = new THREE.WebGLRenderer({
         alpha: true
