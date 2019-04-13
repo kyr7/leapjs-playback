@@ -1,10 +1,6 @@
 import json
 
-ID = 0
-TIMESTAMP = 1
-HANDS = 2
-POINTABLES = 3
-INTERACTION_BOX = 4
+from python.LeapFrame import LeapFrame
 
 
 def read_file(name='pinch-57fps.json'): return open(name, "r").read()
@@ -35,3 +31,5 @@ print(frames[1])
 json_out = json.dumps(leap_data)
 
 write_file(json_out)
+
+print(LeapFrame(json_data=frames[1]))
