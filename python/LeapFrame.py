@@ -86,7 +86,9 @@ index = Index()
 def get_string_template(*args):
     r = range(len(args))
     templ = str(["{{}}".format(x) for x in r])
-    formatted = templ.format(*args).replace("'{}'", '{}')
+    formatted = templ.format(*args).replace("'{}'", "{}")[2:-2]\
+        .replace("False", "false")\
+        .replace("True", "true")
     return formatted
 
 
@@ -103,7 +105,7 @@ class InteractionBox:
         return getattr(self, index.int_box_item_index[key])
 
     def __str__(self):
-        return get_string_template(self[0], self[1])
+        return get_string_template(list(map(lambda x: self[x], range(0, len(index.int_box_index)))))
 
 
 class Pointables:
@@ -114,7 +116,10 @@ class Pointables:
             self.pointables = pointables
 
     def __str__(self):
-        return str(["{}".format(h) for h in self.pointables])
+        res = "["
+        for p in self.pointables:
+            res = res + str(p) + ", "
+        return res[:-2]+"]"
 
 
 class Pointable:
@@ -158,8 +163,8 @@ class Pointable:
         return getattr(self, index.pointables_item_index[key])
 
     def __str__(self):
-        return get_string_template(list(map(lambda x: self[x], range(0, len(index.pointables_item_index)))))
-
+        res = get_string_template(list(map(lambda x: self[x], range(0, len(index.pointables_item_index)))))
+        return res
 
 class Hands:
     def __init__(self, json_data=None, hands=None):
@@ -169,7 +174,10 @@ class Hands:
             self.hands = hands
 
     def __str__(self):
-        return str(["{}".format(h) for h in self.hands])
+        res = "["
+        for hand in self.hands:
+            res = res + str(hand) + ", "
+        return res[:-2]+"]"
 
 
 class Hand:
@@ -211,7 +219,8 @@ class Hand:
         return getattr(self, index.hand_item_index[key])
 
     def __str__(self):
-        return get_string_template(list(map(lambda x: self[x], range(0, len(index.hand_item_index)))))
+        res = get_string_template(list(map(lambda x: self[x], range(0, len(index.hand_item_index)))))
+        return res
 
 
 class LeapFrame:
@@ -233,12 +242,9 @@ class LeapFrame:
             self.timestamp = timestamp
 
     def __str__(self):
-        return '[{}, {}, {}, {}, {}]'.format(self.id, self.timestamp, str(self.hands), str(self.pointables), str(self.interactionBox))\
-            .replace('None', 'null')
+        return '[{}, {}, {}, {}, {}]'\
+            .format(self.id, self.timestamp, self.hands, self.pointables, self.interactionBox)\
+            .replace("'", '"').replace('None', 'null')
 
 
 frame = LeapFrame(str_data=test_frame)
-
-print(test_frame)
-print(frame)
-print(frame == test_frame)

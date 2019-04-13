@@ -26,10 +26,15 @@ frames = leap_data['frames']
 print(frames[0])
 
 # first frame
-print(frames[1])
+got_frame_str = str(frames[1])
+print("got fr: " + got_frame_str)
 
 json_out = json.dumps(leap_data)
 
 write_file(json_out)
 
-print(LeapFrame(json_data=frames[1]))
+parsed_frame_str = str(LeapFrame(json_data=frames[1]))
+parsed_frame_to_json_str = str(json.loads(parsed_frame_str))
+print("parsed: " + parsed_frame_to_json_str)
+
+print(got_frame_str == parsed_frame_to_json_str)
