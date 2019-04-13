@@ -75,21 +75,55 @@ index = Index()
 
 
 class InteractionBox:
-    def __init__(self, json_data=None, interaction_box=None):
-        print("InteractionBox")
-
-
-class Pointable:
-    def __init__(self, json_data=None, pointable=None):
-        print("Pointable")
-
+    def __init__(self, json_data=None, interaction_box=None, center=None, size=None):
+        if None is not json_data:
+            self.center = json_data[index.int_box_index["center"]]
+            self.size = json_data[index.int_box_index["size"]]
+        else:
+            self.center = center
+            self.size = size
 
 class Pointables:
     def __init__(self, json_data=None, pointables=None):
         if None is not json_data:
-            self.pointables = list(map(lambda j: Hand(json_data=j), json_data))
+            self.pointables = list(map(lambda j: Pointable(json_data=j), json_data))
         else:
             self.pointables = pointables
+
+
+class Pointable:
+    def __init__(self, json_data=None, id=None, direction=None, hand_id=None, length=None,
+                 tip_position=None, tip_velocity=None, carp_position=None, mcp_position=None, pip_position=None,
+                 dip_position=None, btip_position=None, bases=None, pointable_type=None):
+        if None is not json_data:
+            self.id = json_data[index.pointables_index["id"]]
+            self.direction = json_data[index.pointables_index["id"]]
+            self.handId = json_data[index.pointables_index["handId"]]
+            self.length = json_data[index.pointables_index["length"]]
+            self.tipPosition = json_data[index.pointables_index["tipPosition"]]
+            self.tipVelocity = json_data[index.pointables_index["tipVelocity"]]
+            self.carpPosition = json_data[index.pointables_index["carpPosition"]]
+            self.mcpPosition = json_data[index.pointables_index["mcpPosition"]]
+            self.pipPosition = json_data[index.pointables_index["pipPosition"]]
+            self.dipPosition = json_data[index.pointables_index["dipPosition"]]
+            self.btipPosition = json_data[index.pointables_index["btipPosition"]]
+            self.bases = json_data[index.pointables_index["bases"]]
+            self.type = json_data[index.pointables_index["type"]]
+        else:
+            self.id = id
+            self.direction = direction
+            self.hand_id = hand_id
+            self.length = length
+            self.tipPosition = tip_position
+            self.tipVelocity = tip_velocity
+            self.carpPosition = carp_position
+            self.mcpPosition = mcp_position
+            self.pipPosition = pip_position
+            self.dipPosition = dip_position
+            self.btipPosition = btip_position
+            self.bases = bases
+            self.type = pointable_type
+
 
 class Hands:
     def __init__(self, json_data=None, hands=None):
