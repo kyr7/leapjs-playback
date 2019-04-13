@@ -83,6 +83,13 @@ class Index:
 index = Index()
 
 
+def get_string_template(*args):
+    r = range(len(args))
+    templ = str(["{{}}".format(x) for x in r])
+    formatted = templ.format(*args).replace("'{}'", '{}')
+    return formatted
+
+
 class InteractionBox:
     def __init__(self, json_data=None, interaction_box=None, center=None, size=None):
         if None is not json_data:
@@ -96,7 +103,7 @@ class InteractionBox:
         return getattr(self, index.int_box_item_index[key])
 
     def __str__(self):
-        return '[{},{}]'.format(self[0], self[1])
+        return get_string_template(self[0], self[1])
 
 
 class Pointables:
@@ -106,18 +113,23 @@ class Pointables:
         else:
             self.pointables = pointables
 
+    def __str__(self):
+        return str(["{}".format(h) for h in self.pointables])
+
 
 class Pointable:
-    def __init__(self, json_data=None, id=None, direction=None, hand_id=None, length=None,
-                 tip_position=None, tip_velocity=None, carp_position=None, mcp_position=None, pip_position=None,
+    def __init__(self, json_data=None, id=None, direction=None, hand_id=None, length=None, stabilized_tip_position=None,
+                 tip_position=None, tip_velocity=None, tool=None, carp_position=None, mcp_position=None, pip_position=None,
                  dip_position=None, btip_position=None, bases=None, pointable_type=None):
         if None is not json_data:
             self.id = json_data[index.pointables_index["id"]]
-            self.direction = json_data[index.pointables_index["id"]]
+            self.direction = json_data[index.pointables_index["direction"]]
             self.handId = json_data[index.pointables_index["handId"]]
             self.length = json_data[index.pointables_index["length"]]
+            self.stabilizedTipPosition = json_data[index.pointables_index["stabilizedTipPosition"]]
             self.tipPosition = json_data[index.pointables_index["tipPosition"]]
             self.tipVelocity = json_data[index.pointables_index["tipVelocity"]]
+            self.tool = json_data[index.pointables_index["tool"]]
             self.carpPosition = json_data[index.pointables_index["carpPosition"]]
             self.mcpPosition = json_data[index.pointables_index["mcpPosition"]]
             self.pipPosition = json_data[index.pointables_index["pipPosition"]]
@@ -130,8 +142,10 @@ class Pointable:
             self.direction = direction
             self.hand_id = hand_id
             self.length = length
+            self.stabilizedTipPosition = stabilized_tip_position
             self.tipPosition = tip_position
             self.tipVelocity = tip_velocity
+            self.tool = tool
             self.carpPosition = carp_position
             self.mcpPosition = mcp_position
             self.pipPosition = pip_position
@@ -140,6 +154,12 @@ class Pointable:
             self.bases = bases
             self.type = pointable_type
 
+    def __getitem__(self, key):
+        return getattr(self, index.pointables_item_index[key])
+
+    def __str__(self):
+        return get_string_template(list(map(lambda x: self[x], range(0, len(index.pointables_item_index)))))
+
 
 class Hands:
     def __init__(self, json_data=None, hands=None):
@@ -147,6 +167,9 @@ class Hands:
             self.hands = list(map(lambda j: Hand(json_data=j), json_data))
         else:
             self.hands = hands
+
+    def __str__(self):
+        return str(["{}".format(h) for h in self.hands])
 
 
 class Hand:
@@ -183,6 +206,12 @@ class Hand:
             self.armWidth = arm_width
             self.elbow = elbow
             self.wrist = wrist
+
+    def __getitem__(self, key):
+        return getattr(self, index.hand_item_index[key])
+
+    def __str__(self):
+        return get_string_template(list(map(lambda x: self[x], range(0, len(index.hand_item_index)))))
 
 
 class LeapFrame:
