@@ -60,14 +60,23 @@ test_frame = '[171719, 11086766568, [[87, "right", [-0.0457658, 0.69241, -0.7200
 
 class Index:
     def __init__(self, frame_str=FRAME_STRUCTURE["frame"]):
-        self.hand_index = self.index_json(frame_str[HANDS]["hands"][0])
-        self.pointables_index = self.index_json(frame_str[POINTABLES]["pointables"][0])
-        self.int_box_index = self.index_json(frame_str[INTERACTION_BOX]["interactionBox"])
+        hands_ = frame_str[HANDS]["hands"][0]
+        self.hand_item_index = self.index_json(hands_)
+        self.hand_index = self.reverse(self.hand_item_index)
+
+        pointables_ = frame_str[POINTABLES]["pointables"][0]
+        self.pointables_item_index = self.index_json(pointables_)
+        self.pointables_index = self.reverse(self.pointables_item_index)
+
+        self.int_box_item_index = self.index_json(frame_str[INTERACTION_BOX]["interactionBox"])
+        self.int_box_index = self.reverse(self.int_box_item_index)
 
     @staticmethod
     def index_json(frame_str):
-        index_to_name = dict(enumerate(frame_str))
-        # name to index
+        return dict(enumerate(frame_str))
+
+    @staticmethod
+    def reverse(index_to_name):
         return {v: k for k, v in index_to_name.items()}
 
 
@@ -82,6 +91,13 @@ class InteractionBox:
         else:
             self.center = center
             self.size = size
+
+    def __getitem__(self, key):
+        return getattr(self, index.int_box_item_index[key])
+
+    def __str__(self):
+        return '[{},{}]'.format(self[0], self[1])
+
 
 class Pointables:
     def __init__(self, json_data=None, pointables=None):
@@ -172,12 +188,11 @@ class Hand:
 class LeapFrame:
     def __init__(self, str_data=None, json_data=None, id=None, timestamp=None, hands=None, pointables=None,
                  interaction_box=None):
-
         if None is not str_data:
             json_data = json.loads('{"x":' + str_data + '}')['x']
         if None is not json_data:
             self.hands = Hands(json_data[HANDS])
-            self.poitables = Pointables(json_data[POINTABLES])
+            self.pointables = Pointables(json_data[POINTABLES])
             self.interactionBox = InteractionBox(json_data[INTERACTION_BOX])
             self.id = json_data[ID]
             self.timestamp = json_data[TIMESTAMP]
@@ -188,7 +203,13 @@ class LeapFrame:
             self.id = id
             self.timestamp = timestamp
 
+    def __str__(self):
+        return '[{}, {}, {}, {}, {}]'.format(self.id, self.timestamp, str(self.hands), str(self.pointables), str(self.interactionBox))\
+            .replace('None', 'null')
+
 
 frame = LeapFrame(str_data=test_frame)
 
-print()
+print(test_frame)
+print(frame)
+print(frame == test_frame)
