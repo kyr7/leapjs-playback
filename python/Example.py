@@ -33,8 +33,13 @@ json_out = json.dumps(leap_data)
 
 write_file(json_out)
 
-parsed_frame_str = str(LeapFrame(json_data=frames[1]))
+frame = LeapFrame(json_data=frames[1])
+parsed_frame_str = str(frame)
 parsed_frame_to_json_str = str(json.loads(parsed_frame_str))
 print("parsed: " + parsed_frame_to_json_str)
 
 print(got_frame_str == parsed_frame_to_json_str)
+
+native_frame = frame.to_json()
+print("json frame: " + native_frame)
+

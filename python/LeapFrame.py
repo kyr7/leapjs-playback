@@ -246,5 +246,8 @@ class LeapFrame:
             .format(self.id, self.timestamp, self.hands, self.pointables, self.interactionBox)\
             .replace("'", '"').replace('None', 'null')
 
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+            sort_keys=False, indent=None)
 
 frame = LeapFrame(str_data=test_frame)
