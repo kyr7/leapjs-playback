@@ -34,7 +34,7 @@ class Server:
 
     def __init__(self):
         self.connected = False
-        self.i_frame = 1
+        self.i_frame = 0
         start_server = websockets.serve(self.hello, 'localhost', 6437)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
@@ -44,14 +44,17 @@ class Server:
             self.i_frame += 1
         else:
             self.i_frame = 1
-            print("done")
+            print("loop")
         return LeapFrame(json_data=frames[self.i_frame]).to_json()
 
     async def hello(self, websocket, path):
+        print("connecting")
+
         async def disconnect():
             self.i_frame = 0
             self.connected = False
             websocket.close()
+            print("disconnected")
 
         try:
             self.i_frame = 0
@@ -64,7 +67,7 @@ class Server:
                 payload = self.get_next_grame()
                 await websocket.send(payload)
                 time.sleep(0.01)
-                print(payload)
+                # print(payload)
         except:
             await disconnect()
 
