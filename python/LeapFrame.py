@@ -223,6 +223,15 @@ class Hand:
         return res
 
 
+class NativeFrame:
+    def __init__(self, LeapFrame):
+        self.id = LeapFrame.id
+        self.timestamp = LeapFrame.timestamp
+        self.hands = LeapFrame.hands.hands
+        self.pointables = LeapFrame.pointables.pointables
+        self.interactionBox = LeapFrame.interactionBox
+
+
 class LeapFrame:
     def __init__(self, str_data=None, json_data=None, id=None, timestamp=None, hands=None, pointables=None,
                  interaction_box=None):
@@ -247,7 +256,5 @@ class LeapFrame:
             .replace("'", '"').replace('None', 'null')
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__,
+        return json.dumps(NativeFrame(self), default=lambda o: o.__dict__,
             sort_keys=False, indent=None)
-
-frame = LeapFrame(str_data=test_frame)

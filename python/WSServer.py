@@ -59,7 +59,7 @@ class Server:
                              '"type": "peripheral" },"type": "deviceEvent"}}')
 
         while True:
-            payload = json.dumps(self.get_next_grame())
+            payload = self.get_next_grame()
             await websocket.send(payload)
             time.sleep(0.01)
             print(payload)
