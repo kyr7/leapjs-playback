@@ -166,6 +166,7 @@ class Pointable:
         res = get_string_template(list(map(lambda x: self[x], range(0, len(index.pointables_item_index)))))
         return res
 
+
 class Hands:
     def __init__(self, json_data=None, hands=None):
         if None is not json_data:
