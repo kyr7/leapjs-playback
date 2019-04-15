@@ -166,6 +166,7 @@ class Pointable:
         res = get_string_template(list(map(lambda x: self[x], range(0, len(index.pointables_item_index)))))
         return res
 
+
 class Hands:
     def __init__(self, json_data=None, hands=None):
         if None is not json_data:
@@ -223,6 +224,15 @@ class Hand:
         return res
 
 
+class NativeFrame:
+    def __init__(self, LeapFrame):
+        self.id = LeapFrame.id
+        self.timestamp = LeapFrame.timestamp
+        self.hands = LeapFrame.hands.hands
+        self.pointables = LeapFrame.pointables.pointables
+        self.interactionBox = LeapFrame.interactionBox
+
+
 class LeapFrame:
     def __init__(self, str_data=None, json_data=None, id=None, timestamp=None, hands=None, pointables=None,
                  interaction_box=None):
@@ -246,5 +256,6 @@ class LeapFrame:
             .format(self.id, self.timestamp, self.hands, self.pointables, self.interactionBox)\
             .replace("'", '"').replace('None', 'null')
 
-
-frame = LeapFrame(str_data=test_frame)
+    def to_json(self):
+        return json.dumps(NativeFrame(self), default=lambda o: o.__dict__,
+            sort_keys=False, indent=None)
