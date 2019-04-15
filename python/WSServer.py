@@ -51,6 +51,7 @@ class Server:
         async def disconnect():
             self.i_frame = 0
             self.connected = False
+            websocket.close()
 
         try:
             self.i_frame = 0
